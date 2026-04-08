@@ -131,6 +131,18 @@ describe('ReaderProgressService', () => {
     });
   });
 
+  it('passes progression from relocate event to saveEpubProgress', () => {
+    service.initialize(17, 'EPUB', 23);
+    service.handleRelocateEvent({
+      cfi: 'epubcfi(/6/2)',
+      fraction: 0.5,
+      progression: 0.75,
+      pageItem: {href: 'chapter.xhtml'},
+    });
+
+    expect(bookPatchService.saveEpubProgress).toHaveBeenCalledWith(17, 'epubcfi(/6/2)', 'chapter.xhtml', 0.75, 50, 23);
+  });
+
   it('ends an active session with rounded progress', () => {
     service.initialize(17, 'EPUB');
     service.handleRelocateEvent({

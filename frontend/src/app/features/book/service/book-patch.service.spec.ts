@@ -89,6 +89,29 @@ describe('BookPatchService', () => {
     expect(queryClient.invalidateQueries).toHaveBeenCalledWith({queryKey: ['books', 'detail', 7]});
   });
 
+  it('includes progression in EPUB progress request and file progress when provided', () => {
+    service.saveEpubProgress(7, 'epubcfi(/6/2)', 'chapter-1.xhtml', 0.42, 15, 31);
+
+    const request = httpTestingController.expectOne(req => req.url.endsWith('/api/v1/books/progress'));
+    expect(request.request.body).toEqual({
+      bookId: 7,
+      epubProgress: {
+        cfi: 'epubcfi(/6/2)',
+        href: 'chapter-1.xhtml',
+        progression: 0.42,
+        percentage: 15,
+      },
+      fileProgress: {
+        bookFileId: 31,
+        positionData: 'epubcfi(/6/2)',
+        positionHref: 'chapter-1.xhtml',
+        positionProgression: 0.42,
+        progressPercent: 15,
+      },
+    });
+    request.flush(null);
+  });
+
   it('patches cached progress fields when resetting kobo progress', () => {
     service.resetProgress([1, 2], ResetProgressTypes.KOBO).subscribe();
 
