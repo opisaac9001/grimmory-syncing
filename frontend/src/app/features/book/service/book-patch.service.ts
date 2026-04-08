@@ -39,13 +39,14 @@ export class BookPatchService {
   private http = inject(HttpClient);
   private queryClient = inject(QueryClient);
 
-  private epubProgressSubject = new Subject<{ bookId: number; cfi: string; href: string; percentage: number; bookFileId?: number }>();
+  private epubProgressSubject = new Subject<{ bookId: number; cfi: string; href: string; progression: number | null; percentage: number; bookFileId?: number }>();
 
   private epubProgress$ = this.epubProgressSubject.pipe(
     distinctUntilChanged((prev, curr) =>
       prev.bookId === curr.bookId &&
       prev.cfi === curr.cfi &&
       prev.href === curr.href &&
+      prev.progression === curr.progression &&
       prev.percentage === curr.percentage &&
       prev.bookFileId === curr.bookFileId
     ),
@@ -55,12 +56,14 @@ export class BookPatchService {
         epubProgress: {
           cfi: string;
           href: string;
+          progression?: number | null;
           percentage: number;
         };
         fileProgress?: {
           bookFileId: number;
           positionData: string;
           positionHref: string;
+          positionProgression?: number | null;
           progressPercent: number;
         };
       } = {
@@ -68,6 +71,7 @@ export class BookPatchService {
         epubProgress: {
           cfi: payload.cfi,
           href: payload.href,
+          progression: payload.progression,
           percentage: payload.percentage
         }
       };
@@ -76,6 +80,7 @@ export class BookPatchService {
           bookFileId: payload.bookFileId,
           positionData: payload.cfi,
           positionHref: payload.href,
+          positionProgression: payload.progression,
           progressPercent: payload.percentage
         };
       }
@@ -83,7 +88,7 @@ export class BookPatchService {
         tap(() => {
           patchBookFieldsInCache(this.queryClient, [{
             bookId: payload.bookId,
-            fields: {epubProgress: {cfi: payload.cfi, href: payload.href, percentage: payload.percentage}}
+            fields: {epubProgress: {cfi: payload.cfi, href: payload.href, progression: payload.progression ?? undefined, percentage: payload.percentage}}
           }]);
         })
       );
@@ -144,8 +149,8 @@ export class BookPatchService {
     );
   }
 
-  saveEpubProgress(bookId: number, cfi: string, href: string, percentage: number, bookFileId?: number): void {
-    this.epubProgressSubject.next({bookId, cfi, href, percentage, bookFileId});
+  saveEpubProgress(bookId: number, cfi: string, href: string, progression: number | null, percentage: number, bookFileId?: number): void {
+    this.epubProgressSubject.next({bookId, cfi, href, progression, percentage, bookFileId});
   }
 
   saveCbxProgress(bookId: number, page: number, percentage: number, bookFileId?: number): Observable<void> {

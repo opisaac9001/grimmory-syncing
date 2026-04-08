@@ -285,7 +285,7 @@ export class EbookReaderComponent implements OnInit, OnDestroy {
               if (cfi && cfi.startsWith('epubcfi(')) {
                 return this.viewManager.goTo(cfi);
               } else if (href) {
-                return this.viewManager.goTo(href);
+                return this.viewManager.goTo({href, progression: progress?.progression ?? undefined});
               } else if (percentage && percentage > 0) {
                 return this.viewManager.goToFraction(percentage / 100);
               } else {

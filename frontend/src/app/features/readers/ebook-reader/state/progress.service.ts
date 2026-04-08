@@ -40,6 +40,7 @@ export interface RelocateProgressData {
   pageItem?: ProgressNavigationItem;
   tocItem?: ProgressNavigationItem;
   fraction?: number;
+  progression?: number;
   section?: ProgressSection;
   time?: ProgressTime;
 }
@@ -100,6 +101,7 @@ export class ReaderProgressService {
 
     const cfi = detail?.cfi ?? null;
     const href = detail?.pageItem?.href ?? detail?.tocItem?.href ?? null;
+    const progression = typeof detail?.progression === 'number' ? detail.progression : null;
     const percentage = typeof detail?.fraction === 'number' ? detail.fraction * 100 : null;
 
     if (!this.hasStartedSession && cfi && percentage !== null) {
@@ -108,7 +110,7 @@ export class ReaderProgressService {
     }
 
     if (cfi && percentage !== null) {
-      this.bookPatchService.saveEpubProgress(this.bookId, cfi, href ?? '', percentage, this.bookFileId);
+      this.bookPatchService.saveEpubProgress(this.bookId, cfi, href ?? '', progression, percentage, this.bookFileId);
       this.readingSessionService.updateProgress(cfi, percentage);
     }
 

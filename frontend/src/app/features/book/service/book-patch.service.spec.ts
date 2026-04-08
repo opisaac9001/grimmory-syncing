@@ -62,8 +62,8 @@ describe('BookPatchService', () => {
   });
 
   it('deduplicates identical EPUB progress updates before posting', () => {
-    service.saveEpubProgress(7, 'epubcfi(/6/2)', 'chapter-1.xhtml', 15, 31);
-    service.saveEpubProgress(7, 'epubcfi(/6/2)', 'chapter-1.xhtml', 15, 31);
+    service.saveEpubProgress(7, 'epubcfi(/6/2)', 'chapter-1.xhtml', null, 15, 31);
+    service.saveEpubProgress(7, 'epubcfi(/6/2)', 'chapter-1.xhtml', null, 15, 31);
 
     const request = httpTestingController.expectOne(req => req.url.endsWith('/api/v1/books/progress'));
     expect(request.request.body).toEqual({
@@ -71,12 +71,14 @@ describe('BookPatchService', () => {
       epubProgress: {
         cfi: 'epubcfi(/6/2)',
         href: 'chapter-1.xhtml',
+        progression: null,
         percentage: 15,
       },
       fileProgress: {
         bookFileId: 31,
         positionData: 'epubcfi(/6/2)',
         positionHref: 'chapter-1.xhtml',
+        positionProgression: null,
         progressPercent: 15,
       },
     });

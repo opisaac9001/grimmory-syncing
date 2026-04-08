@@ -155,6 +155,7 @@ public interface AppBookMapper {
         return AppBookDetail.EpubProgress.builder()
                 .cfi(progress.getEpubProgress())
                 .href(progress.getEpubProgressHref())
+                .progression(progress.getEpubProgressProgression())
                 .percentage(progress.getEpubProgressPercent())
                 .updatedAt(progress.getLastReadTime())
                 .build();

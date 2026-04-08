@@ -33,6 +33,9 @@ public class UserBookFileProgressEntity {
     @Column(name = "position_href", length = 1000)
     private String positionHref;
 
+    @Column(name = "position_progression")
+    private Float positionProgression;
+
     @Column(name = "progress_percent")
     private Float progressPercent;
 

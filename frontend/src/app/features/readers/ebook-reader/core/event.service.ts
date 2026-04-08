@@ -28,6 +28,7 @@ interface RelocateEventItem {
 interface RelocateEventDetail {
   cfi?: string | null;
   fraction?: number;
+  progression?: number;
   tocItem?: RelocateEventItem;
   pageItem?: RelocateEventItem;
   section?: { current: number; total: number };

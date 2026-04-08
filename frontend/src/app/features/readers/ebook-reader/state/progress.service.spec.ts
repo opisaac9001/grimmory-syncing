@@ -111,7 +111,7 @@ describe('ReaderProgressService', () => {
     });
 
     expect(readingSessionService.startSession).toHaveBeenCalledWith(17, 'EPUB', 'epubcfi(/6/2)', 25.4);
-    expect(bookPatchService.saveEpubProgress).toHaveBeenCalledWith(17, 'epubcfi(/6/2)', 'chapter.xhtml', 25.4, 23);
+    expect(bookPatchService.saveEpubProgress).toHaveBeenCalledWith(17, 'epubcfi(/6/2)', 'chapter.xhtml', null, 25.4, 23);
     expect(readingSessionService.updateProgress).toHaveBeenCalledWith('epubcfi(/6/2)', 25.4);
     expect(annotationService.updateCurrentChapter).toHaveBeenCalledWith('Chapter 1');
     expect(bookmarkService.updateCurrentPosition).toHaveBeenCalledWith('epubcfi(/6/2)', 'Chapter 1');

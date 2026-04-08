@@ -126,6 +126,7 @@ public class ReadingProgressService {
             book.setEpubProgress(EpubProgress.builder()
                     .cfi(progress.getEpubProgress())
                     .href(progress.getEpubProgressHref())
+                    .progression(progress.getEpubProgressProgression())
                     .percentage(roundToTwoDecimals(progress.getEpubProgressPercent()))
                     .build());
         }
@@ -153,6 +154,7 @@ public class ReadingProgressService {
             case EPUB, FB2, MOBI, AZW3 -> book.setEpubProgress(EpubProgress.builder()
                     .cfi(fileProgress.getPositionData())
                     .href(fileProgress.getPositionHref())
+                    .progression(fileProgress.getPositionProgression())
                     .percentage(roundToTwoDecimals(fileProgress.getProgressPercent()))
                     .ttsPositionCfi(fileProgress.getTtsPositionCfi())
                     .build());
@@ -305,6 +307,7 @@ public class ReadingProgressService {
         entity.setBookFile(bookFile);
         entity.setPositionData(fileProgress.positionData());
         entity.setPositionHref(fileProgress.positionHref());
+        entity.setPositionProgression(fileProgress.positionProgression());
         entity.setProgressPercent(fileProgress.progressPercent());
         entity.setTtsPositionCfi(fileProgress.ttsPositionCfi());
         entity.setLastReadTime(now);
@@ -331,6 +334,7 @@ public class ReadingProgressService {
             case EPUB, FB2, MOBI, AZW3 -> {
                 entity.setPositionData(progress.getEpubProgress());
                 entity.setPositionHref(progress.getEpubProgressHref());
+                entity.setPositionProgression(progress.getEpubProgressProgression());
                 entity.setProgressPercent(progress.getEpubProgressPercent());
             }
             case CBX -> {
@@ -358,6 +362,7 @@ public class ReadingProgressService {
             case EPUB, FB2, MOBI, AZW3 -> {
                 progress.setEpubProgress(fileProgress.positionData());
                 progress.setEpubProgressHref(fileProgress.positionHref());
+                progress.setEpubProgressProgression(fileProgress.positionProgression());
                 progress.setEpubProgressPercent(fileProgress.progressPercent());
             }
             case CBX -> {
@@ -386,6 +391,7 @@ public class ReadingProgressService {
 
         progress.setEpubProgress(epubProgress.getCfi());
         progress.setEpubProgressHref(epubProgress.getHref());
+        progress.setEpubProgressProgression(epubProgress.getProgression());
 
         if (epubProgress.getPercentage() == null) return null;
         return roundToTwoDecimals(epubProgress.getPercentage());

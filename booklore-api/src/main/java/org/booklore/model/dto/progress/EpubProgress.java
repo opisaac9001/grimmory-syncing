@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class EpubProgress {
     String cfi;
     String href;
+    Float progression;
     Float percentage;
     String ttsPositionCfi;
 }
